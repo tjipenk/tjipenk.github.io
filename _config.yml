@@ -34,19 +34,19 @@ disqus:
 
 # if you don't have any of social below, comment the line
 # facebook: myfacebook
-twitter: https://twitter.com/filip5114
+twitter: filip5114
 # instagram: myinstagram
 # pinterest: mypinterest
-linkedin: https://www.linkedin.com/in/karol-filipczuk/
+linkedin: karol-filipczuk
 # youtube: myyoutube
 # spotify: myspotify
-github: https://github.com/filip5114
+github: filip5114
 # gitlab: mygitlab
 # lastfm: mylastfm
 # stackoverflow: 7044681/mystackoverflow
 # quora: userquora
 # reddit: username
-medium: https://karol-filipczuk.medium.com
+medium: karol-filipczuk
 # vimeo: myvimeo
 # lanyrd: mylanyrd
 email: karolfilip3@@gmail.com
@@ -57,7 +57,7 @@ authors:
     bio: DevOps and Cloud
     external-image: false
     picture: assets/images/profile.jpg
-    twitter: https://twitter.com/filip5114
+    twitter: filip5114
 
 # do you want a larger site? change the option below
 # options: [normal, large] | default: normal
