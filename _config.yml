@@ -1,9 +1,9 @@
 # main text of home
-name: John Doe
-bio: A Man who travels the world eating noodles
+name: Karol Filipczuk
+bio: DevOps and Cloud.\nI write articles to share knowledge about awesome.
 
 # twitter summary info
-description: A blog about technology and stuff related
+description: A blog about DevOps and Cloud
 
 # if it's an external image, update below for true
 # better with square images
@@ -12,12 +12,11 @@ picture: assets/images/profile.jpg
 
 # If you want to include your resume, set to true
 # and specify source (external or local).
-resume: true
+resume: false
 resume-external: true
 resume-url: https://google.com/?q=my+resume
 
-url: https://sergiokopplin.github.io/indigo
-# your url: https://USERNAME.github.io
+url: https://filip5114.github.io
 
 permalink: /:title/
 
@@ -31,40 +30,34 @@ permalink: /:title/
 # if you don't want comments in your posts, leave categories empty
 disqus:
   shortname: mydisqus # enter this from your disqus account
-  categories: [blog, project] # only show disqus for posts that have these categories
+  categories: []#[blog, project] # only show disqus for posts that have these categories
 
 # if you don't have any of social below, comment the line
-facebook: myfacebook
-twitter: mytwitter
+# facebook: myfacebook
+twitter: https://twitter.com/filip5114
 # instagram: myinstagram
 # pinterest: mypinterest
-# linkedin: mylinkedin
+linkedin: https://www.linkedin.com/in/karol-filipczuk/
 # youtube: myyoutube
 # spotify: myspotify
-github: mygithub
+github: https://github.com/filip5114
 # gitlab: mygitlab
 # lastfm: mylastfm
 # stackoverflow: 7044681/mystackoverflow
 # quora: userquora
 # reddit: username
-medium: medium
+medium: https://karol-filipczuk.medium.com
 # vimeo: myvimeo
 # lanyrd: mylanyrd
-email: myemail@gmail.com
+email: karolfilip3@@gmail.com
 
 authors:
-  johndoe:
-    name: John Doe
-    bio: A Man who travels the world eating noodles
+  karolfilipczuk:
+    name: Karol Filipczuk
+    bio: DevOps and Cloud
     external-image: false
     picture: assets/images/profile.jpg
-    twitter: johndoe
-  jamesfoster:
-    name: James Foster
-    bio: A Man who develops software with coffee
-    external-image: false
-    picture: assets/images/james.jpg
-    twitter: jamesfoster
+    twitter: https://twitter.com/filip5114
 
 # do you want a larger site? change the option below
 # options: [normal, large] | default: normal
