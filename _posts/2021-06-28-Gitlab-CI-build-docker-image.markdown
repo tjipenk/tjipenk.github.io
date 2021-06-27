@@ -33,8 +33,9 @@ Agenda
 2. Create Dockerfile
 3. Create Gitlab CI pipeline (.gitlab-ci.yml)
 	1. Build and push docker image
-	2. Use docker image
-4. Run pipeline
+	2. Use custom docker image
+	3. Be efficient!
+4. Summary
 
 Create new GitLab project
 =========================
@@ -98,10 +99,91 @@ You will directed to editor with an example pipeline. We can use it, but we only
 
 Build and push docker image
 ----------------------------------
+Pipeline job for building docker image must have 3 main actions:
+- login into container registry
+- build docker image
+- push image to the docker registry
 
-Use docker image
+{% gist filip5114/1c26acaad5c10c4a37713ebe7f5854a9 %}
+<p class="bottom-caption">Pipeline job - docker image build</p>
+
+Currently our pipeline has job for building docker image. Let's explain it:
+- `build:docker-alpine-java` - A job's name
+- `stage` - Stage in which job runs.
+- `image` - An image which will be used to create container for running our script
+- `services` - Defines docker image that runs during the job linked to the docker image specified in `image`. We are using docker-in-docker (job is running docker as image and as service)
+- `variables` - Defines variables for the job. We only define one variable, image name.
+- `before_script` - Defines commands to be run before commands in `script` section. We use it to login into Gitlab container registry
+- `script` - Defines the main commands to be run during job. There are 3 main steps in the script:
+	- `docker pull $TAG:latest || true`
+	\
+	Pulls image with latest tag or returns `true`. It will ensure that job will not fail if there is no image with latest tag.
+	- `docker build --cache-from $TAG:latest --tag $TAG:$CI_COMMIT_REF_NAME --tag $TAG:latest .`
+	\
+	Builds image using Dockerfile in repo root directory and tags it twice (branch name and latest). Uses option `--cache-from` to use cache from latest avaiable image in container registry. Since we are running docker-in-docker, each time in fresh environment, current runtime has no data from previous runs. The docker runtime can't use cache from previous build, unlesss we manually pull latest image and supply it in `--cache-from` option.
+	- `docker push $TAG:$CI_COMMIT_REF_NAME`
+	\
+	Push image tagged with branch name to container repository.
+	- `docker push $TAG:latest`
+	\
+	Push image tagged with latest to container repository.
+\
+\
+Hit button `Commit changes` below editor and the pipeline should start automatically. Go to `CI/CD -> Pipelines`.
+
+![First pipeline run for docker image build](../assets/2021-06-28-Gitlab-CI-build-docker-image/build_image_pipeline.png)
+<p class="bottom-caption">First pipeline run for docker image build</p>
+
+You can click on `Status` to check the logs and more detailed information.
+Pipeline run succesfully. Let's check the container registry. Go to `Packages & Registry -> Container Registry`.
+
+![Images in container registry](../assets/2021-06-28-Gitlab-CI-build-docker-image/image_name.png)
+<p class="bottom-caption">Images in container registry</p>
+
+You should see an image with a name the same as defiend in `$TAG` variable inside pipeline job. Under the name there is information that two tagged image exisit. Click on image name.
+
+![Tagged images](../assets/2021-06-28-Gitlab-CI-build-docker-image/image_tags.png)
+<p class="bottom-caption">Tagged images</p>
+
+Two images exisit as expected: one tagged latest and second tagged with branch name (master in mine case).
+
+Use custom docker image
 ----------------------------------
+Docker image build is working now as expected and is part of the pipeline. Now we will use newly created image in another pipeline job. Second job will use `docker-alpine-java` image and run script `java -version` to see that in fact we are using our custom alpine image with java installed.
+\
+\
+{% gist filip5114/c2b015c0e8d95160b9cdb03af3477dd1 %}
+<p class="bottom-caption">Pipeline job - use custom image</p>
 
-Run pipeline
+Testing custom image job is quite simpler.
+- `test:alpine-java` - Job name.
+- `image` - Image used by job. It's path to our custom image in Gitlab container registry
+- `stage` - Stage in which job runs.
+- `script` - Defines the main commands to be run during job. Java version check in our case.
+
+Go to the `CI/CD -> Pipelines`, then click on last one to see that two jobs were done succesfully (build and test). Click on test job to check the logs.
+/
+We are looking for two interesting parts:
+- logs showing which image is being used
+![Logs - custom image](../assets/2021-06-28-Gitlab-CI-build-docker-image/log_custom_image.png)
+
+- logs showing `java -version` command
+![Logs - java version](../assets/2021-06-28-Gitlab-CI-build-docker-image/log_java_version.png)
+
+Be efficient!
+----------------------------------
+You might have noticed a flaw in pipeline. When pipeline run at first it had built alpine-java image and pushed it to repository.
+When pipeline run the second time it built alpine-image again, even though it was not necessary. It's is casued by not having any rules defining when to run a job in piepline.
+\
+Fortunately it is a quick fix. Add a rule section in `build:docker-alpine-java` job. The rule will allow job to run only if there is any change in `Dockerfile`.
+\
+{% gist filip5114/4cc2619ab4e3f64d2f7e94e3e61cbd72 %}
+<p class="bottom-caption">Pipeline job - rule</p>
+\
+If you now check latest pipeline run you will notice that only `test:alpine-java` was run in pipeline.
+![Pipeline with rule](../assets/2021-06-28-Gitlab-CI-build-docker-image/pipeline_run_rule.png)
+<p class="bottom-caption">Pipeline with rule</p>
+
+Summary
 ====================================
 
