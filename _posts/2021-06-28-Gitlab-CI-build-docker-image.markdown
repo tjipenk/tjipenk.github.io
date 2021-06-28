@@ -1,7 +1,7 @@
 ---
-title: "GitLab CI Pipeline. Build docker image."
+title: "GitLab CI Pipeline. Build docker image in pipeline job."
 layout: post
-date: 2021-06-18 09:00
+date: 2021-06-28 09:00
 image: /assets/images/markdown.jpg
 headerImage: false
 tag:
@@ -13,8 +13,8 @@ category: blog
 author: karolfilipczuk
 description: Include docker image build in Gitlab CI Pipeline, push it to Gitlab Repo and use it in another job.
 ---
-![Photo by Jantine Doornbos on Unsplash](https://cdn-images-1.medium.com/max/1600/0*DzEDp3kusk5qSsnS)
-<p class="bottom-caption">Photo by <a href="https://unsplash.com/@jantined">Jantine Doornbos</a> on <a href="https://unsplash.com">Unsplash</a></p>
+![Photo by Jantine Doornbos on Unsplash](../assets/2021-06-28-Gitlab-CI-build-docker-image/banner.jpg)
+<p class="bottom-caption">Photo by <a href="https://unsplash.com/@nessa_rin">Rinson Chory</a> on <a href="https://unsplash.com">Unsplash</a></p>
 
 Gitlab allows seamlessly using docker image from public and private hubs. I bet that most of you uses docker executors. All works great and without a hassle until you need to build your own docker image. Fortunately, you can build your docker image automatically in pipeline by leveraging docker-in-docker image build. 
 \
@@ -113,7 +113,7 @@ Currently our pipeline has job for building docker image. Let's explain it:
 - `image` - An image which will be used to create container for running our script
 - `services` - Defines docker image that runs during the job linked to the docker image specified in `image`. We are using docker-in-docker (job is running docker as image and as service)
 - `variables` - Defines variables for the job. We only define one variable, image name.
-- `before_script` - Defines commands to be run before commands in `script` section. We use it to login into Gitlab container registry
+- `before_script` - Defines commands to be run before commands in `script` section. We use it to login into Gitlab container registry. The variables used are predefined Gitlab variables.
 - `script` - Defines the main commands to be run during job. There are 3 main steps in the script:
 	- `docker pull $TAG:latest || true`
 	\
@@ -173,9 +173,10 @@ We are looking for two interesting parts:
 Be efficient!
 ----------------------------------
 You might have noticed a flaw in pipeline. When pipeline run at first it had built alpine-java image and pushed it to repository.
-When pipeline run the second time it built alpine-image again, even though it was not necessary. It's is casued by not having any rules defining when to run a job in piepline.
+When pipeline has run the second time it built alpine-image again, even though it was not necessary. It's casued by not having any rules defining when to run a job in piepline.
 \
 Fortunately it is a quick fix. Add a rule section in `build:docker-alpine-java` job. The rule will allow job to run only if there is any change in `Dockerfile`.
+\
 \
 {% gist filip5114/4cc2619ab4e3f64d2f7e94e3e61cbd72 %}
 <p class="bottom-caption">Pipeline job - rule</p>
@@ -183,7 +184,22 @@ Fortunately it is a quick fix. Add a rule section in `build:docker-alpine-java` 
 If you now check latest pipeline run you will notice that only `test:alpine-java` was run in pipeline.
 ![Pipeline with rule](../assets/2021-06-28-Gitlab-CI-build-docker-image/pipeline_run_rule.png)
 <p class="bottom-caption">Pipeline with rule</p>
+\
+Moreover, thanks to the flaw we have just fixed, you can compare diffrence in duration of two docker build jobs.
+\
+\
+![Build jobs duration](../assets/2021-06-28-Gitlab-CI-build-docker-image/build_jobs_duration.png)
+<p class="bottom-caption">Build jobs duration</p>
+\
+Maybe you already figured why the build job took 1 min 30 sec when was run first time, but only 1 min when run second time?
+The answer is cache. Second run built exactly the same image as the first run, beacause there was no diffrence in Dockerfile. Since we implemented cache usage in docker image build job, the second run was much quicker.
 
 Summary
 ====================================
+Throughtout the blog post we have succesfully: 
+- Created new Gitlab project
+- Created Dockerfile
+- Implemented docker image build in Gitlab pipeline job
+- Used the newly created image in another job
 
+Thanks for reading!
