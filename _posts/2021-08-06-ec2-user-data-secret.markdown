@@ -1,5 +1,5 @@
 ---
-title: "How to safely use sensitive data at EC2 launch?"
+title: "How to safely use sensitive data at EC2 launch with Secret Manager?"
 layout: post
 date: 2021-08-06 09:00
 image: /assets/secret-ec2-user-data/nicolas-hippert-J4eTN9GqhzI-unsplash.jpg
