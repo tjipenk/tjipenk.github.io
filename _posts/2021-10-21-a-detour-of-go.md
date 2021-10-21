@@ -1,5 +1,5 @@
 ---
-title: "A De(Tour) of Go"
+title: "A (De)Tour of Go"
 layout: post
 date: 2021-10-21 17:00
 image: /assets/a-detour-of-go/gologo.png
