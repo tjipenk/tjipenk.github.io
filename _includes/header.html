@@ -20,6 +20,22 @@
         <h2 class="description">{{ site.bio }}</h2>
 
         {% include social-links.html %}
+
+        <!-- Begin Mailchimp Signup Form -->
+        <link href="//cdn-images.mailchimp.com/embedcode/horizontal-slim-10_7.css" rel="stylesheet" type="text/css">
+        <style type="text/css">
+            #mc_embed_signup{background:#fff; clear:left; font:14px Helvetica,Arial,sans-serif; width:100%; padding-top: 2em;}
+            /* Add your own Mailchimp form style overrides in your site stylesheet or in this style block.
+            We recommend moving this block and the preceding CSS link to the HEAD of your HTML file. */
+        </style>
+        <form style="padding:3px;text-align:center;" 
+            action="https://tinyletter.com/filip5114" method="post" target="popupwindow" 
+            onsubmit="window.open('https://tinyletter.com/filip5114', 'popupwindow', 'scrollbars=yes,width=800,height=600');return true">
+            <p></p><label for="tlemail">Let's keep in touch</label></p>
+            <input type="text" style="width:140px" name="email" id="tlemail" placeholder="email address" />
+            <input type="hidden" value="1" name="embed"/>
+            <input type="submit" value="Subscribe" />
+        </form>
     </header>
 {% endif %}
 
