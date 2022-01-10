@@ -12,6 +12,7 @@ layout: page
 	<ul>
 		<li>AWS Certified Solutions Architect - Associate</li>
 		<li>AWS Certified SysOps Administrator - Associate</li>
+		<li>AWS Certified Developer - Associate</li>
 	</ul>
 	<li><i class="li-icon">:cloud:</i> Azure</li>
 	<ul>
