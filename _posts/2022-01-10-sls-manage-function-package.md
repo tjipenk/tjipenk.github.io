@@ -174,7 +174,7 @@ At the end, on the function level include the necessary files. It will keep the 
 
 The final configuration should look like:
 ```yaml
-sservice: managePkg
+service: managePkg
 
 frameworkVersion: '2 || 3'
 
