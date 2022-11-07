@@ -16,7 +16,7 @@ resume: false
 resume-external: true
 resume-url: https://google.com/?q=my+resume
 
-url: https://filip5114.github.io
+url: https://tjipenk.github.io
 
 permalink: /:title/
 
@@ -34,13 +34,12 @@ disqus:
 
 # if you don't have any of social below, comment the line
 # facebook: myfacebook
-twitter: filip5114
 # instagram: myinstagram
 # pinterest: mypinterest
 linkedin: karol-filipczuk
 # youtube: myyoutube
 # spotify: myspotify
-github: filip5114
+github: tjipenk
 # gitlab: mygitlab
 # lastfm: mylastfm
 # stackoverflow: 7044681/mystackoverflow
@@ -57,7 +56,7 @@ authors:
     bio: DevOps and Cloud
     external-image: false
     picture: assets/images/profile.jpg
-    twitter: filip5114
+    twitter: tjipenk
 
 # do you want a larger site? change the option below
 # options: [normal, large] | default: normal
